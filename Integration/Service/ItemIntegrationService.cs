@@ -1,10 +1,12 @@
 ﻿using Integration.Common;
 using Integration.Backend;
+using System.Collections.Concurrent;
 
 namespace Integration.Service;
 
 public sealed class ItemIntegrationService
 {
+    private ConcurrentDictionary<string, string> items = new ConcurrentDictionary<string, string>();
     //This is a dependency that is normally fulfilled externally.
     private ItemOperationBackend ItemIntegrationBackend { get; set; } = new();
 
@@ -14,15 +16,28 @@ public sealed class ItemIntegrationService
     // be allowed for performance reasons.
     public Result SaveItem(string itemContent)
     {
-        // Check the backend to see if the content is already saved.
-        if (ItemIntegrationBackend.FindItemsWithContent(itemContent).Count != 0)
+        if(!items.TryAdd(itemContent, itemContent))
         {
             return new Result(false, $"Duplicate item received with content {itemContent}.");
         }
 
-        var item = ItemIntegrationBackend.SaveItem(itemContent);
+        // Check the backend to see if the content is already saved.
+        //if (ItemIntegrationBackend.FindItemsWithContent(itemContent).Count != 0)
+        //{
+        //    return new Result(false, $"Duplicate item received with content {itemContent}.");
+        //}
 
-        return new Result(true, $"Item with content {itemContent} saved with id {item.Id}");
+        try
+        {
+            // Save new item.
+            var item = ItemIntegrationBackend.SaveItem(itemContent);
+            return new Result(true, $"Item with content {itemContent} saved with id {item.Id}");
+        }
+        finally
+        {
+            // When the saving process is complete, we remove the content from the cache.
+            items.TryRemove(itemContent, out _);
+        }
     }
 
     public List<Item> GetAllItems()
