@@ -7,24 +7,24 @@ public abstract class Program
 {
     public static void Main(string[] args)
     {
-        //var service = new ItemIntegrationService();
-        //Console.WriteLine("ItemIntegrationService:");
+        var service = new ItemIntegrationService();
+        Console.WriteLine("ItemIntegrationService:");
 
-        //ThreadPool.QueueUserWorkItem(_ => service.SaveItem("a"));
-        //ThreadPool.QueueUserWorkItem(_ => service.SaveItem("b"));
-        //ThreadPool.QueueUserWorkItem(_ => service.SaveItem("c"));
+        ThreadPool.QueueUserWorkItem(_ => service.SaveItem("a"));
+        ThreadPool.QueueUserWorkItem(_ => service.SaveItem("b"));
+        ThreadPool.QueueUserWorkItem(_ => service.SaveItem("c"));
 
-        //Thread.Sleep(500);
+        Thread.Sleep(500);
 
-        //ThreadPool.QueueUserWorkItem(_ => service.SaveItem("a"));
-        //ThreadPool.QueueUserWorkItem(_ => service.SaveItem("b"));
-        //ThreadPool.QueueUserWorkItem(_ => service.SaveItem("c"));
+        ThreadPool.QueueUserWorkItem(_ => service.SaveItem("a"));
+        ThreadPool.QueueUserWorkItem(_ => service.SaveItem("b"));
+        ThreadPool.QueueUserWorkItem(_ => service.SaveItem("c"));
 
-        //Thread.Sleep(5000);
+        Thread.Sleep(5000);
 
-        //Console.WriteLine("Everything recorded:");
+        Console.WriteLine("Everything recorded:");
 
-        //service.GetAllItems().ForEach(Console.WriteLine);
+        service.GetAllItems().ForEach(Console.WriteLine);
 
         Console.WriteLine("------------------------------------------------");
 

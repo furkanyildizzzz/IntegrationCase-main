@@ -1,0 +1,5 @@
+﻿Distributed System Weaknesses:
+Lock Contention: Multiple servers might attempt to acquire the same lock, which could cause delays in processing other requests.
+Single Point of Failure: Relying on Redis or another external lock service introduces a single point of failure or a bottleneck if that service becomes unavailable.
+Performance Overhead: Implementing a distributed lock adds some overhead, especially if many requests are coming in quickly.
+Consistency Issues: In case of network partition or failure, lock acquisition might fail, leading to inconsistent behavior (e.g., two servers processing the same item).
